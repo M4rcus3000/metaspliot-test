@@ -15,7 +15,7 @@ def IpCheck(ip):
 def loop(ip):
     while True:
         if(IpCheck(ip)):
-            return True
+            return ip
         else:
             ip = input("Wrong IP format, try again\n")
             continue
@@ -35,8 +35,8 @@ def nmapScan(ip):
            subprocess.call(["clear"])
            subprocess.call(["cat","%s/nmap_scan"%DIR])
            ip_new = input("\n\nEnter manually your target's IP:\n")
-           if (loop(ip_new)):
-               return ip_new
+           trueIp = loop(ip_new)
+           return trueIp
        else:
            continue
 
@@ -62,12 +62,11 @@ if __name__ == '__main__':
 
 
     network = input("Enter your network without mask. Example 0.0.0.0\n")
-
-
-    if(loop(network)):
-        subprocess.call(["clear"])
-        subprocess.call(["ip","a"])
-        ipt = input("\n\n\nEnter the name of the current Hots-Only network IP. Example: 0.0.0.0\n")
-        if(loop(ipt)):
-            startup = nmapScan(network)
-            msfconsole(startup, ipt)    
+    trueNet = loop(network)
+    subprocess.call(["clear"])
+    subprocess.call(["ip","a"])
+    ipt = input("\n\n\nEnter the name of the current Hots-Only network IP. Example: 0.0.0.0\n")
+    trueipt = loop(ipt)
+    startup = nmapScan(trueNet)
+    msfconsole(startup, trueipt) 
+    
